@@ -15,6 +15,8 @@ public class Client {
             Writer wr = new BufferedWriter(ouw);
             wr.write("hello server!");
             wr.flush();
+
+
             Scanner sc = new Scanner(System.in);
             while(true){
                 String message = sc.nextLine();

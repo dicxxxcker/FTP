@@ -1,6 +1,6 @@
-import static
 
-public class CodeTset {
+
+public class CodeTest {
     public static void main(String[] args){
 
     }

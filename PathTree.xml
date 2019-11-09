@@ -1,0 +1,8 @@
+<Node name="root">
+    <Node name="disk1">
+        <Node name="dir1.1">
+        </Node>
+    </Node>
+    <Node name="disk2">
+    </Node>
+</Node>

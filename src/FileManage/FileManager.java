@@ -1,5 +1,5 @@
 package FileManage;
-import kotlin.jvm.Throws;
+
 
 import java.io.File;
 import java.util.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class FileManager {
     PathTree root;
 
-    FileManager(File xml) throws Exception{
+    public FileManager(File xml) throws Exception{
         try {
             Scanner sc = new Scanner(xml);
             LinkedList<PathTree> stack = new LinkedList<>();
@@ -20,24 +20,26 @@ public class FileManager {
                     if(node.charAt(i)=='N'){
                         String dirName = null;
                         for(int j=i,left=0,right=0;j<node.length();j++){
-                            if(node.charAt(i)=='"'){
+                            if(node.charAt(j)=='"'){
                                 if(left==right)
-                                    left = i;
+                                    left = j;
                                 else {
-                                    right = i;
-                                    dirName = node.substring(i + 1, j);
+                                    right = j;
+                                    dirName = node.substring(left + 1, right);
                                     break;
                                 }
                             }
                         }
                         if(dirName==null)
                             throw new Exception("initial file format error! label(dir) name property missing");
-                        if(cur==null)
-                            cur = new PathTree(null,"root");
+                        if(cur==null) {
+                            cur = new PathTree(null, "root");
+                            stack.push(cur);
+                        }
                         else{
                             stack.push(cur);
-                            PathTree child = new PathTree(cur,cur.dirPath+"/"+"dirName");
-                            cur.dirs.add(child);
+                            PathTree child = new PathTree(cur,cur.dirPath+"/"+dirName);
+                            cur.dirs.put(dirName,child);
                             cur = child;
                         }
                         break;
@@ -66,27 +68,16 @@ public class FileManager {
 class PathTree{
     PathTree parentDir;
     String dirPath;
-    List<PathTree> dirs;
+    HashMap<String,PathTree> dirs;
 
     public PathTree(PathTree parentDir,String dirPath){
         this.parentDir = parentDir;
         this.dirPath = dirPath;
-        dirs = new LinkedList<>();
-
+        this.dirs = new HashMap<>();
+        //dirs = new LinkedList<>();
     }
 
 
-    PathTree(File xml) throws Exception{
-        try {
-            Scanner sc = new Scanner(xml);
-            Stack<PathTree> stack = new LinkedList<>();
-            List<String> list = new LinkedList<String>();
-            for (sc.hasNextLine())
-                list.add(sc.nextLine());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
-    }
 }
 

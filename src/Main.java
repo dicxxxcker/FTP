@@ -16,10 +16,13 @@ public class Main {
         FTPClient client = new FTPClient();
         try {
             ServerSocket server = new ServerSocket(9102);
+            ServerSocket dataTransform = new ServerSocket(8102);
             while(true){
                 Socket accept = server.accept();
+                Socket dataAccept = dataTransform.accept();
                 ServerThread service = new ServerThread();
                 service.setRemoteSocket(accept);
+                service.setDataSocket(dataAccept);
                 new Thread(service).start();
             }
             /*

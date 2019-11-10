@@ -1,11 +1,19 @@
+import sun.plugin2.util.SystemUtil;
+
 import java.io.*;
 import java.net.Socket;
 
 public class ServerThread implements Runnable{
+    //控制端口
     Socket remoteSocket;
-
+    //数据端口
+    Socket dataSocket;
     public void setRemoteSocket(Socket remoteSocket) {
         this.remoteSocket= remoteSocket;
+    }
+
+    public void setDataSocket(Socket dataSocket) {
+        this.dataSocket = dataSocket;
     }
 
     @Override
@@ -29,6 +37,7 @@ public class ServerThread implements Runnable{
             while(true) {
                 if(br.ready()) {
                     userName = br.readLine();
+                    System.out.println("UserName: "+userName);
                     break;
                 }
             }
@@ -39,6 +48,7 @@ public class ServerThread implements Runnable{
             while(true) {
                 if(br.ready()) {
                     password = br.readLine();
+                    System.out.println("Password: "+password);
                     break;
                 }
             }
@@ -54,6 +64,11 @@ public class ServerThread implements Runnable{
                 if (s != null && s.equals("exit"))
                     break;
             }
+
+
+            ObjectInputStream ois = new ObjectInputStream(in);
+            System.out.println(ois.readUTF());
+            ois.close();
         }
         catch(Exception e){
             e.printStackTrace();

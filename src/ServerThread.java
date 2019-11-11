@@ -1,3 +1,4 @@
+import Instructions.InstructionFactory;
 import sun.plugin2.util.SystemUtil;
 
 import java.io.*;
@@ -21,7 +22,7 @@ public class ServerThread implements Runnable{
         try {
             InputStream in = remoteSocket.getInputStream();
             InputStreamReader isr = new InputStreamReader(in);
-            BufferedReader br = new BufferedReader(isr);
+            ObjectInputStream read = new ObjectInputStream(in);
             String s = null;
             //以后应加入日志功能
             System.out.println("a new connection from"+ remoteSocket.getRemoteSocketAddress() +" established!");
@@ -31,41 +32,34 @@ public class ServerThread implements Runnable{
             Writer wr = new BufferedWriter(ouw);
 
             //login
-            wr.write("Enter Your UserName: (it's okay to be empty)\n");
+            //wr.write("Enter Your UserName: (it's okay to be empty)\n");
+            //读取用户名
             wr.flush();
-            String userName;
-            while(true) {
-                if(br.ready()) {
-                    userName = br.readLine();
-                    System.out.println("UserName: "+userName);
-                    break;
-                }
-            }
+            String userName = read.readUTF();
+            System.out.println("UserName: "+userName);
 
-            wr.write("Enter Your Password: (it's okay to be empty)\n");
+            //wr.write("Enter Your Password: (it's okay to be empty)\n");
+            //读取密码
             wr.flush();
-            String password;
-            while(true) {
-                if(br.ready()) {
-                    password = br.readLine();
-                    System.out.println("Password: "+password);
-                    break;
-                }
-            }
+            String password = read.readUTF();
+            System.out.println("Password: "+password);
 
 
             while (true) {
-
-                if ((s = br.readLine()) != null) {
-                    System.out.println("get:" + s);
-                }
-                //if(s.equals("exit"))
-                //   break;
-                if (s != null && s.equals("exit"))
+                String instruction = read.readUTF();
+                //退出检查
+                if(instruction.equals("exit"))
                     break;
+                Thread serverThread = new Thread(InstructionFactory.generateInstruction(instruction,remoteSocket,dataSocket,true));
+                serverThread.start();
+                //手动阻塞 因为IO不是线程安全的 结束一个任务后再开始一个任务
+                while(true){
+                    if(!serverThread.isAlive())
+                        break;
+                }
             }
 
-
+            //测试代码
             ObjectInputStream ois = new ObjectInputStream(in);
             System.out.println(ois.readUTF());
             ois.close();

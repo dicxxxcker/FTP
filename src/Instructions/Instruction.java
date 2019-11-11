@@ -6,9 +6,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public abstract class Instruction implements Runnable {
-    Socket ctrlSocket;
-    Socket dataSocket;
-    String[] params;
+    public Socket ctrlSocket;
+    public Socket dataSocket;
+    public String[] params;
 
     public void setCtrlSocket(Socket ctrlSocket) {
         this.ctrlSocket = ctrlSocket;

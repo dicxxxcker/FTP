@@ -8,7 +8,6 @@ import java.util.*;
 public class Client {
 
     public static void main(String[] args) {
-        FTPClient client = new FTPClient();
         try {
             //控制端口
             Socket remoteSc = new Socket("localhost", 9102);
@@ -40,27 +39,24 @@ public class Client {
             //操作过程 传输指令
             while(true){
                 //String instruction = sc.nextLine();
-                String str = sc.nextLine();
+                String instruction = sc.nextLine();
                 //退出检查
-                if(str.equals("exit"))
+                if(instruction.equals("exit"))
                     break;
-                String[] params = str.trim().split("( )+");
+                //String[] params = str.trim().split("( )+");
                 //传输控制信息给服务端做好准备
-                oos.writeUTF(str);
+                oos.writeUTF(instruction);
                 oos.flush();
                 //本地执行操作
-                Thread local = new Thread(InstructionFactory.generateInstruction(str,remoteSc,dataSocket,false));
-                local.start();
+                Thread clientThread = new Thread(InstructionFactory.generateInstruction(instruction,remoteSc,dataSocket,false));
+                clientThread.start();
                 //手动阻塞 因为IO不是线程安全的 结束一个任务后再开始一个任务
                 while(true){
-                if(!local.isAlive())
+                if(!clientThread.isAlive())
                     break;
                 }
             }
 
-            //文件IO实验
-            oos.writeUTF(sc.nextLine());
-            oos.flush();
 
             remoteSc.close();
         }

@@ -6,11 +6,16 @@ import java.net.Socket;
 
 public class ServerThread implements Runnable{
     //控制端口
-    Socket remoteSocket;
+    protected Socket ctrlSocket;
     //数据端口
-    Socket dataSocket;
-    public void setRemoteSocket(Socket remoteSocket) {
-        this.remoteSocket= remoteSocket;
+    protected Socket dataSocket;
+    //当前文件路径
+    protected String currentPath ="root";
+    //日志
+    BufferedWriter logging;
+
+    public void setCtrlSocket(Socket ctrlSocket) {
+        this.ctrlSocket= ctrlSocket;
     }
 
     public void setDataSocket(Socket dataSocket) {
@@ -20,14 +25,14 @@ public class ServerThread implements Runnable{
     @Override
     public void run() {
         try {
-            InputStream in = remoteSocket.getInputStream();
+            InputStream in = ctrlSocket.getInputStream();
             InputStreamReader isr = new InputStreamReader(in);
             ObjectInputStream read = new ObjectInputStream(in);
             String s = null;
             //以后应加入日志功能
-            System.out.println("a new connection from"+ remoteSocket.getRemoteSocketAddress() +" established!");
+            System.out.println("a new connection from"+ ctrlSocket.getRemoteSocketAddress() +" established!");
 
-            OutputStream out = remoteSocket.getOutputStream();
+            OutputStream out = ctrlSocket.getOutputStream();
             OutputStreamWriter ouw = new OutputStreamWriter(out);
             Writer wr = new BufferedWriter(ouw);
 
@@ -50,7 +55,7 @@ public class ServerThread implements Runnable{
                 //退出检查
                 if(instruction.equals("exit"))
                     break;
-                Thread serverThread = new Thread(InstructionFactory.generateInstruction(instruction,remoteSocket,dataSocket,true));
+                Thread serverThread = new Thread(InstructionFactory.generateInstruction(instruction,ctrlSocket,dataSocket,true));
                 serverThread.start();
                 //手动阻塞 因为IO不是线程安全的 结束一个任务后再开始一个任务
                 while(true){

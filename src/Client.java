@@ -44,9 +44,9 @@ public class Client {
                 if(instruction.equals("exit"))
                     break;
                 //String[] params = str.trim().split("( )+");
-                //传输控制信息给服务端做好准备
-                oos.writeUTF(instruction);
-                oos.flush();
+                //传输控制信息给服务端做好准备 （转到lambada中进行通信）
+                //oos.writeUTF(instruction);
+                //oos.flush();
                 //本地执行操作
                 Thread clientThread = new Thread(InstructionFactory.generateInstruction(instruction,remoteSc,dataSocket,false));
                 clientThread.start();

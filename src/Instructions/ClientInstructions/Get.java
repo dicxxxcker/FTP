@@ -1,4 +1,10 @@
 package Instructions.ClientInstructions;
 
-public class Get {
+import Instructions.Instruction;
+
+public class Get extends Instruction {
+    @Override
+    public void run() {
+
+    }
 }

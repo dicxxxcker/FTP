@@ -21,7 +21,7 @@ public class Main {
                 Socket accept = server.accept();
                 Socket dataAccept = dataTransform.accept();
                 ServerThread service = new ServerThread();
-                service.setRemoteSocket(accept);
+                service.setCtrlSocket(accept);
                 service.setDataSocket(dataAccept);
                 new Thread(service).start();
             }

@@ -1,10 +1,11 @@
 package Instructions;
 
-import Instructions.ClientInstructions.Get;
+import Instructions.ClientInstructions.*;
+import Instructions.serverInstructions.*;
 
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.function.Consumer;
+
 
 public class InstructionFactory {
     //服务端指令映射
@@ -12,7 +13,9 @@ public class InstructionFactory {
     //客户端指令映射
     public static final HashMap<String,Class> clientMapping = new HashMap<>();
 
-    static{}
+    static{
+        serverMapping.put("get", _Get.class);
+    }
     static{
         clientMapping.put("get", Get.class);
 

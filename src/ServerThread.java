@@ -53,6 +53,7 @@ public class ServerThread implements Runnable{
             while (true) {
                 String instruction = read.readUTF();
                 //退出检查
+                System.out.println("instruction "+instruction+" get!");
                 if(instruction.equals("exit"))
                     break;
                 Thread serverThread = new Thread(InstructionFactory.generateInstruction(instruction,ctrlSocket,dataSocket,true));

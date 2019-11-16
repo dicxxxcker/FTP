@@ -9,16 +9,17 @@ public class Get extends Instruction {
     public void run() {
         try {
             System.out.println("instruction Get(Client) start!");
-            System.out.println("1");
+            ;
+            //System.out.println("1");
             //太神秘了
             //ObjectInputStream ois = new ObjectInputStream(ctrlSocket.getInputStream());
             //ObjectOutputStream oos = new ObjectOutputStream(ctrlSocket.getOutputStream());
             //须先进行命令是否合法的判断
             //oos.writeObject(this.params);
-            //File file = (File)ois.readObject();
+            //System.out.println("1");
 
 
-            System.out.println("1");
+
             // get file meta information
             ObjectInputStream input = new ObjectInputStream(dataSocket.getInputStream());
             System.out.println("Read FileName");

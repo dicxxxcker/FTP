@@ -38,7 +38,7 @@ public class Client {
 
 
             //final ObjectOutputStream oos = new ObjectOutputStream(out);
-            final ObjectOutputStream dataOs = new ObjectOutputStream(dataSocket.getOutputStream());
+            //final ObjectOutputStream dataOs = new ObjectOutputStream(dataSocket.getOutputStream());
 
             //操作过程 传输指令
             while(true){
@@ -47,7 +47,7 @@ public class Client {
                 //退出检查
                 if(instruction.equals("exit"))
                     break;
-                oos.writeUTF("get");
+                oos.writeUTF(instruction);
                 oos.flush();
                 //String[] params = str.trim().split("( )+");
                 //传输控制信息给服务端做好准备 （转到lambada中进行通信）
